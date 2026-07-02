@@ -1,6 +1,16 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '@/shared/hooks/useAuth'
 
+// =============================================================================
+// ProtectedRoute — Guard para rotas autenticadas
+// =============================================================================
+//
+// Comportamento:
+//   loading    → exibe spinner enquanto verifica sessao inicial
+//   sem sessao → redireciona para /login (replace: nao adiciona ao historico)
+//   com sessao → renderiza <Outlet /> (rotas filhas do AppLayout)
+// =============================================================================
+
 export function ProtectedRoute() {
   const { session, loading } = useAuth()
 

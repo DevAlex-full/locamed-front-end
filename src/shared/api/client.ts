@@ -1,6 +1,18 @@
 import axios, { type AxiosError } from 'axios'
 import { supabase } from '@/shared/lib/supabase'
 
+// =============================================================================
+// API Client — Axios para o backend Fastify
+// =============================================================================
+//
+// Todas as chamadas ao backend Fastify passam por este client.
+// Supabase Auth (login, logout, refresh) usa src/shared/lib/supabase.ts.
+//
+// Interceptors:
+//   Request  → injeta Bearer token da sessao Supabase em cada requisicao
+//   Response → trata 401: faz logout e redireciona para /login
+// =============================================================================
+
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: { 'Content-Type': 'application/json' },
@@ -16,7 +28,7 @@ api.interceptors.request.use(async (config) => {
   return config
 })
 
-// Trata 401: faz logout e redireciona para /login
+// Trata 401: sessao expirada ou revogada
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {

@@ -6,18 +6,11 @@ import { useAuth } from '@/shared/hooks/useAuth'
 // =============================================================================
 //
 // Comportamento:
-//   loading  → exibe spinner enquanto verifica sessao inicial
+//   loading    → exibe spinner enquanto verifica sessao inicial
 //   com sessao → redireciona para / (usuario ja esta logado)
 //   sem sessao → renderiza <Outlet /> (exibe a rota publica normalmente)
 //
-// Uso no router:
-//   {
-//     element: <PublicRoute />,
-//     children: [{ path: '/login', element: <LoginPage /> }],
-//   }
-//
-// Isso garante que um usuario autenticado que acesse /login diretamente
-// seja redirecionado automaticamente para o dashboard.
+// Garante que usuario autenticado nao consiga acessar /login.
 // =============================================================================
 
 export function PublicRoute() {
