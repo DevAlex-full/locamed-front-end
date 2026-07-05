@@ -4,35 +4,24 @@ import { PublicRoute } from './PublicRoute'
 import { AppLayout } from '@/shared/components/layout/AppLayout'
 import { LoginPage } from '@/modules/auth/pages/LoginPage'
 import { DashboardPage } from '@/modules/dashboard/pages/DashboardPage'
+import { ClientsPage } from '@/modules/clients/pages/ClientsPage'
 
 // =============================================================================
 // Router — Configuracao de rotas da aplicacao
 // =============================================================================
 //
 // Hierarquia:
-//
-//   PublicRoute         → /login        → LoginPage
+//   PublicRoute   → /login           → LoginPage
 //
 //   ProtectedRoute
-//     AppLayout         → layout pai de todas as rotas autenticadas
-//       /               → DashboardPage
-//       /schedule       → SchedulePage       (Etapa futura)
-//       /reservations   → ReservationsPage   (Etapa futura)
-//       /chairs         → ChairsPage         (Etapa futura)
-//       /clients        → ClientsPage        (Etapa futura)
-//       /deliveries     → DeliveriesPage     (Etapa futura)
-//       /financial      → FinancialPage      (Etapa futura)
-//       /contracts      → ContractsPage      (Etapa futura)
-//       /partners       → PartnersPage       (Etapa futura)
-//       /commissions    → CommissionsPage    (Etapa futura)
-//       /users          → UsersPage          (Etapa futura)
-//       /reports        → ReportsPage        (Etapa futura)
-//       /audit          → AuditPage          (Etapa futura)
+//     AppLayout
+//       /          → DashboardPage
+//       /clients   → ClientsPage      (Etapa 10)
 //
-// Para adicionar novo modulo:
-//   1. Importar a Page aqui
-//   2. Adicionar { path: '/rota', element: <Page /> } em children do AppLayout
-//   3. Remover disabled: true do item correspondente em nav-items.ts
+// Para adicionar novos modulos:
+//   1. Importar a Page
+//   2. Adicionar { path, element } em children do AppLayout
+//   3. Remover disabled:true do item em nav-items.ts
 // =============================================================================
 
 export const router = createBrowserRouter([
@@ -54,16 +43,22 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
+          // Dashboard
           {
             path:    '/',
             element: <DashboardPage />,
           },
 
-          // Modulos futuros — descomentados conforme implementados:
+          // Etapa 10: Clientes
+          {
+            path:    '/clients',
+            element: <ClientsPage />,
+          },
+
+          // Etapas futuras:
           // { path: '/schedule',     element: <SchedulePage /> },
           // { path: '/reservations', element: <ReservationsPage /> },
           // { path: '/chairs',       element: <ChairsPage /> },
-          // { path: '/clients',      element: <ClientsPage /> },
           // { path: '/deliveries',   element: <DeliveriesPage /> },
           // { path: '/financial',    element: <FinancialPage /> },
           // { path: '/contracts',    element: <ContractsPage /> },

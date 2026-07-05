@@ -19,29 +19,23 @@ import { UserRoles, type UserRole } from '@/shared/types'
 // Configuracao declarativa da navegacao lateral
 // =============================================================================
 //
-// Tipo do icon:
-//   Usa `typeof LayoutDashboard` em vez de `FC<LucideProps>`.
-//   Motivo: LucideProps é um tipo interno de lucide-react que pode nao ser
-//   resolvido corretamente com moduleResolution:bundler + isolatedModules:true.
-//   `typeof LayoutDashboard` é 100% seguro — resolve o tipo exato do componente
-//   a partir do VALUE importado, sem depender de exports de tipo do pacote.
+// disabled: true  → item renderizado como <span> ("em breve"), nao clicavel
+// disabled: false → item renderizado como <NavLink>, clicavel e com rota ativa
 //
-// Para adicionar um novo modulo:
-//   1. Importar o icone Lucide aqui
-//   2. Adicionar NavItem no grupo correto
-//   3. Remover disabled:true quando a rota for implementada
-//   4. Adicionar a rota em src/app/routes/index.tsx
+// Para ativar um modulo:
+//   1. Remover disabled: true (ou setar disabled: false)
+//   2. Adicionar a rota em src/app/routes/index.tsx
+//   3. Criar a Page em src/modules/<modulo>/pages/
 // =============================================================================
 
-// Tipo do icone derivado do componente real — sem dependencia de LucideProps
 type IconComponent = typeof LayoutDashboard
 
 export interface NavItem {
   label:         string
   path:          string
   icon:          IconComponent
-  allowedRoles?: UserRole[]   // undefined = qualquer usuario autenticado
-  disabled?:     boolean      // true = item ainda nao implementado
+  allowedRoles?: UserRole[]
+  disabled?:     boolean
 }
 
 export interface NavGroup {
@@ -84,10 +78,10 @@ export const navGroups: NavGroup[] = [
         disabled: true,
       },
       {
-        label:    'Clientes',
-        path:     '/clients',
-        icon:     Users,
-        disabled: true,
+        // Etapa 10: Clientes ativo — disabled removido
+        label: 'Clientes',
+        path:  '/clients',
+        icon:  Users,
       },
       {
         label:    'Entregas',
