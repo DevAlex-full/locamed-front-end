@@ -19,13 +19,10 @@ import { UserRoles, type UserRole } from '@/shared/types'
 // Configuracao declarativa da navegacao lateral
 // =============================================================================
 //
-// disabled: true  → item renderizado como <span> ("em breve"), nao clicavel
-// disabled: false → item renderizado como <NavLink>, clicavel e com rota ativa
-//
-// Para ativar um modulo:
-//   1. Remover disabled: true (ou setar disabled: false)
-//   2. Adicionar a rota em src/app/routes/index.tsx
-//   3. Criar a Page em src/modules/<modulo>/pages/
+// Ativos nesta etapa:
+//   Dashboard  → /
+//   Clientes   → /clients    (Etapa 10)
+//   Poltronas  → /chairs     (Etapa 11) ← disabled removido aqui
 // =============================================================================
 
 type IconComponent = typeof LayoutDashboard
@@ -72,13 +69,13 @@ export const navGroups: NavGroup[] = [
     label: 'Operacional',
     items: [
       {
-        label:    'Poltronas',
-        path:     '/chairs',
-        icon:     Armchair,
-        disabled: true,
+        // Etapa 11: Poltronas ativo
+        label: 'Poltronas',
+        path:  '/chairs',
+        icon:  Armchair,
       },
       {
-        // Etapa 10: Clientes ativo — disabled removido
+        // Etapa 10: Clientes ativo
         label: 'Clientes',
         path:  '/clients',
         icon:  Users,

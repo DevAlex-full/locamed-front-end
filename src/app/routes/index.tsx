@@ -5,6 +5,7 @@ import { AppLayout } from '@/shared/components/layout/AppLayout'
 import { LoginPage } from '@/modules/auth/pages/LoginPage'
 import { DashboardPage } from '@/modules/dashboard/pages/DashboardPage'
 import { ClientsPage } from '@/modules/clients/pages/ClientsPage'
+import { ChairsPage } from '@/modules/chairs/pages/ChairsPage'
 
 // =============================================================================
 // Router — Configuracao de rotas da aplicacao
@@ -12,11 +13,11 @@ import { ClientsPage } from '@/modules/clients/pages/ClientsPage'
 //
 // Hierarquia:
 //   PublicRoute   → /login           → LoginPage
-//
 //   ProtectedRoute
 //     AppLayout
 //       /          → DashboardPage
 //       /clients   → ClientsPage      (Etapa 10)
+//       /chairs    → ChairsPage       (Etapa 11)
 //
 // Para adicionar novos modulos:
 //   1. Importar a Page
@@ -43,22 +44,13 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          // Dashboard
-          {
-            path:    '/',
-            element: <DashboardPage />,
-          },
-
-          // Etapa 10: Clientes
-          {
-            path:    '/clients',
-            element: <ClientsPage />,
-          },
+          { path: '/',        element: <DashboardPage /> },
+          { path: '/clients', element: <ClientsPage /> },  // Etapa 10
+          { path: '/chairs',  element: <ChairsPage /> },   // Etapa 11
 
           // Etapas futuras:
           // { path: '/schedule',     element: <SchedulePage /> },
           // { path: '/reservations', element: <ReservationsPage /> },
-          // { path: '/chairs',       element: <ChairsPage /> },
           // { path: '/deliveries',   element: <DeliveriesPage /> },
           // { path: '/financial',    element: <FinancialPage /> },
           // { path: '/contracts',    element: <ContractsPage /> },
