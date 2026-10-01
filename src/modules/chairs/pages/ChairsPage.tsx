@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
@@ -162,13 +162,25 @@ function ChairModal({
   const { register, handleSubmit, reset, formState: { errors } } =
     useForm<ChairFormData>({
       resolver:      zodResolver(chairFormSchema),
-      defaultValues: isEditing
-        ? chairToFormData(editing)
-        : { status: CHAIR_STATUS.available },
+      defaultValues: { status: CHAIR_STATUS.available },
     })
 
+  // CAUSA RAIZ DO BUG: Radix Dialog nao desmonta o modal entre aberturas.
+  // O useForm processa defaultValues apenas na montagem inicial.
+  // Quando editing muda (null → chair) ou open muda para true,
+  // o formulario precisa ser reinicializado explicitamente via reset().
+  useEffect(() => {
+    if (open) {
+      if (editing) {
+        reset(chairToFormData(editing))
+      } else {
+        reset({ status: CHAIR_STATUS.available })
+      }
+    }
+  }, [open, editing, reset])
+
   const handleOpenChange = (isOpen: boolean) => {
-    if (!isOpen) { reset(); setServerError(null); onClose() }
+    if (!isOpen) { reset({ status: CHAIR_STATUS.available }); setServerError(null); onClose() }
   }
 
   const onSubmit = async (form: ChairFormData) => {

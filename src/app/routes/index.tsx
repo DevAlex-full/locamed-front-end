@@ -1,72 +1,116 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
-import { ProtectedRoute } from './ProtectedRoute'
-import { PublicRoute } from './PublicRoute'
-import { AppLayout } from '@/shared/components/layout/AppLayout'
-import { LoginPage } from '@/modules/auth/pages/LoginPage'
-import { DashboardPage } from '@/modules/dashboard/pages/DashboardPage'
-import { ClientsPage } from '@/modules/clients/pages/ClientsPage'
-import { ChairsPage } from '@/modules/chairs/pages/ChairsPage'
+import { Suspense, lazy } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// =============================================================================
-// Router — Configuracao de rotas da aplicacao
-// =============================================================================
-//
-// Hierarquia:
-//   PublicRoute   → /login           → LoginPage
-//   ProtectedRoute
-//     AppLayout
-//       /          → DashboardPage
-//       /clients   → ClientsPage      (Etapa 10)
-//       /chairs    → ChairsPage       (Etapa 11)
-//
-// Para adicionar novos modulos:
-//   1. Importar a Page
-//   2. Adicionar { path, element } em children do AppLayout
-//   3. Remover disabled:true do item em nav-items.ts
-// =============================================================================
+import { LandingPage } from '@/pages/LandingPage';
+import { LoginPage } from '@/pages/LoginPage';
+import { RegisterPage } from '@/pages/RegisterPage';
+import { DashboardPage } from '@/modules/dashboard/pages/DashboardPage';
+
+const ReservationsPage = lazy(() => import('@/modules/reservations/pages/ReservationsPage').then(m => ({ default: m.ReservationsPage })));
+const DeliveriesPage = lazy(() => import('@/modules/deliveries/pages/DeliveriesPage').then(m => ({ default: m.DeliveriesPage })));
+const ChairsPage = lazy(() => import('@/modules/chairs/pages/ChairsPage').then(m => ({ default: m.ChairsPage })));
+const ClientsPage = lazy(() => import('@/modules/clients/pages/ClientsPage').then(m => ({ default: m.ClientsPage })));
+const FinancialPage = lazy(() => import('@/modules/financial/pages/FinancialPage').then(m => ({ default: m.FinancialPage })));
+const AvailabilityPage = lazy(() => import('@/modules/availability/pages/AvailabilityPage').then(m => ({ default: m.AvailabilityPage })));
+const PartnerPage = lazy(() => import('@/modules/partners/pages/PartnerPage').then(m => ({ default: m.PartnerPage })));
+const CommissionPage = lazy(() => import('@/modules/commissions/pages/CommissionPage').then(m => ({ default: m.CommissionPage })));
+const ContractsPage = lazy(() => import('@/modules/contracts/pages/ContractsPage').then(m => ({ default: m.default })));
 
 export const router = createBrowserRouter([
-  // ── Rotas publicas ─────────────────────────────────────────────────────────
   {
-    element: <PublicRoute />,
-    children: [
-      {
-        path:    '/login',
-        element: <LoginPage />,
-      },
-    ],
+    path: '/',
+    element: <LandingPage />,
   },
-
-  // ── Rotas protegidas com layout ────────────────────────────────────────────
   {
-    element: <ProtectedRoute />,
-    children: [
-      {
-        element: <AppLayout />,
-        children: [
-          { path: '/',        element: <DashboardPage /> },
-          { path: '/clients', element: <ClientsPage /> },  // Etapa 10
-          { path: '/chairs',  element: <ChairsPage /> },   // Etapa 11
-
-          // Etapas futuras:
-          // { path: '/schedule',     element: <SchedulePage /> },
-          // { path: '/reservations', element: <ReservationsPage /> },
-          // { path: '/deliveries',   element: <DeliveriesPage /> },
-          // { path: '/financial',    element: <FinancialPage /> },
-          // { path: '/contracts',    element: <ContractsPage /> },
-          // { path: '/partners',     element: <PartnersPage /> },
-          // { path: '/commissions',  element: <CommissionsPage /> },
-          // { path: '/users',        element: <UsersPage /> },
-          // { path: '/reports',      element: <ReportsPage /> },
-          // { path: '/audit',        element: <AuditPage /> },
-        ],
-      },
-    ],
+    path: '/login',
+    element: <LoginPage />,
   },
-
-  // ── Rota nao encontrada ────────────────────────────────────────────────────
   {
-    path:    '*',
-    element: <Navigate to="/" replace />,
+    path: '/register',
+    element: <RegisterPage />,
   },
-])
+  {
+    path: '/dashboard',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <DashboardPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/reservations',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <ReservationsPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/deliveries',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <DeliveriesPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/chairs',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <ChairsPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/clients',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <ClientsPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/financial',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <FinancialPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/availability',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <AvailabilityPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/partners',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <PartnerPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/commissions',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <CommissionPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/contracts',
+    element: (
+      <Suspense fallback={<div className="flex h-screen items-center justify-center">Carregando...</div>}>
+        <ContractsPage />
+      </Suspense>
+    ),
+  },
+]);
+
+export function AppRoutes() {
+  return <RouterProvider router={router} />;
+}

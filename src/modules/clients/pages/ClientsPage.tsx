@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
@@ -154,10 +154,19 @@ function ClientModal({ open, editing, onClose }: ClientModalProps) {
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ClientFormData>({
     resolver:      zodResolver(clientFormSchema),
-    defaultValues: isEditing ? clientToFormData(editing) : {},
+    defaultValues: {},
   })
 
-  // Reset quando o modal abre/fecha ou muda de modo
+  // CAUSA RAIZ DO BUG: Radix Dialog nao desmonta o modal entre aberturas.
+  // O useForm processa defaultValues apenas na montagem inicial.
+  // Quando editing muda (null → client) ou open muda para true,
+  // o formulario precisa ser reinicializado explicitamente via reset().
+  useEffect(() => {
+    if (open) {
+      reset(editing ? clientToFormData(editing) : {})
+    }
+  }, [open, editing, reset])
+
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
       reset()

@@ -12,18 +12,9 @@ import {
   BarChart3,
   UserCog,
   ClipboardList,
+  Ban,
 } from 'lucide-react'
 import { UserRoles, type UserRole } from '@/shared/types'
-
-// =============================================================================
-// Configuracao declarativa da navegacao lateral
-// =============================================================================
-//
-// Ativos nesta etapa:
-//   Dashboard  → /
-//   Clientes   → /clients    (Etapa 10)
-//   Poltronas  → /chairs     (Etapa 11) ← disabled removido aqui
-// =============================================================================
 
 type IconComponent = typeof LayoutDashboard
 
@@ -41,7 +32,6 @@ export interface NavGroup {
 }
 
 export const navGroups: NavGroup[] = [
-  // ── Principal ─────────────────────────────────────────────────────────────
   {
     items: [
       {
@@ -56,26 +46,31 @@ export const navGroups: NavGroup[] = [
         disabled: true,
       },
       {
-        label:    'Reservas',
-        path:     '/reservations',
-        icon:     Calendar,
-        disabled: true,
+        label: 'Reservas',
+        path:  '/reservations',
+        icon:  Calendar,
+      },
+      {
+        label: 'Bloqueios',
+        path:  '/chair-blocks',
+        icon:  Ban,
+      },
+      {
+        label: 'Entregas',
+        path:  '/deliveries',
+        icon:  Truck,
       },
     ],
   },
-
-  // ── Operacional ───────────────────────────────────────────────────────────
   {
     label: 'Operacional',
     items: [
       {
-        // Etapa 11: Poltronas ativo
         label: 'Poltronas',
         path:  '/chairs',
         icon:  Armchair,
       },
       {
-        // Etapa 10: Clientes ativo
         label: 'Clientes',
         path:  '/clients',
         icon:  Users,
@@ -88,8 +83,6 @@ export const navGroups: NavGroup[] = [
       },
     ],
   },
-
-  // ── Gestao ────────────────────────────────────────────────────────────────
   {
     label: 'Gestao',
     items: [
@@ -97,30 +90,29 @@ export const navGroups: NavGroup[] = [
         label:    'Financeiro',
         path:     '/financial',
         icon:     DollarSign,
-        disabled: true,
       },
       {
-        label:    'Contratos',
-        path:     '/contracts',
-        icon:     FileText,
-        disabled: true,
+        label:    'Disponibilidade',
+        path:     '/availability',
+        icon:     Calendar,
       },
       {
         label:    'Parceiros',
         path:     '/partners',
         icon:     Handshake,
-        disabled: true,
       },
       {
-        label:    'Comissoes',
+        label:    'Comissões',
         path:     '/commissions',
         icon:     TrendingUp,
-        disabled: true,
+      },
+      {
+        label:    'Contratos',
+        path:     '/contracts',
+        icon:     FileText,
       },
     ],
   },
-
-  // ── Administracao (admin e super_admin) ───────────────────────────────────
   {
     label: 'Administracao',
     items: [
