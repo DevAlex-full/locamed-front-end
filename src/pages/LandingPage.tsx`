@@ -1,0 +1,418 @@
+import { Link } from 'react-router-dom';
+import { 
+  ArrowRight, 
+  Bed, 
+  ShieldCheck, 
+  Zap, 
+  Calendar, 
+  Users, 
+  CreditCard, 
+  Truck, 
+  FileText, 
+  Handshake, 
+  Percent,
+  CheckCircle2,
+  ChevronRight
+} from 'lucide-react';
+
+// ── UI Components (Internal to Landing to avoid dependencies for now) ─────────────────
+
+function SectionHeading({ title, subtitle, alignment = 'center' }: { title: string, subtitle: string, alignment?: 'center' | 'left' }) {
+  return (
+    <div className={`mb-16 space-y-4 ${alignment === 'center' ? 'text-center' : 'text-left'}`}>
+      <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        {title}
+      </h2>
+      <p className="text-lg text-muted-foreground max-w-2xl mx-auto opacity-80">
+        {subtitle}
+      </p>
+    </div>
+  );
+}
+
+function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
+  return (
+    <div className="group relative p-8 bg-brand-surface border border-input hover:border-primary/50 transition-all duration-300 rounded-sm shadow-premium-sm hover:shadow-premium-md">
+      <div className="mb-6 inline-flex items-center justify-center h-12 w-12 rounded-sm bg-brand-navy text-brand-surface">
+        <Icon size={24} strokeWidth={1.5} />
+      </div>
+      <h3 className="text-lg font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">
+        {title}
+      </h3>
+      <p className="text-sm leading-relaxed text-muted-foreground opacity-90">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+// ── Landing Page Component ──────────────────────────────────────────────────────────
+
+export function LandingPage() {
+  return (
+    <div className="min-h-screen bg-brand-background text-foreground font-sans selection:bg-primary/20">
+      
+      {/* 1. NAVBAR */}
+      <nav className="sticky top-0 z-50 w-full border-b border-input bg-brand-background/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 bg-brand-navy rounded-sm flex items-center justify-center">
+              <span className="text-brand-surface font-bold text-xs">LM</span>
+            </div>
+            <span className="text-xl font-bold tracking-tighter text-brand-navy">LOcAMed</span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
+            <a href="#solucao" className="hover:text-foreground transition-colors">Solução</a>
+            <a href="#modulos" className="hover:text-foreground transition-colors">Módulos</a>
+            <a href="#beneficios" className="hover:text-foreground transition-colors">Benefícios</a>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Link to="/login" className="text-sm font-medium hover:text-primary transition-colors px-4 py-2">
+              Entrar
+            </Link>
+            <Link to="/register" className="bg-brand-navy text-brand-surface px-5 py-2.5 rounded-sm text-sm font-semibold hover:bg-brand-navy/90 transition-all active:scale-[0.98]">
+              Começar Agora
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* 2. HERO SECTION */}
+      <section className="relative pt-24 pb-32 px-6 overflow-hidden">
+        {/* Subtle background element to avoid "AI blobbiness" - using a grid pattern instead */}
+        <div className="absolute inset-0 -z-10 opacity-[0.03] [background-image:linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] [background-size:40px_40px]"></div>
+        
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-10 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wide uppercase">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              Standard de Gestão Médica
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] text-brand-navy">
+              A precisão do controle <span className="text-primary">cirúrgico</span> na gestão de locações.
+            </h1>
+            
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl opacity-90">
+              O ecossistema definitivo para operação de poltronas pós-cirúrgicas. 
+              Do inventário à conciliação financeira, elimine o caos operacional com rigor técnico e elegância.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/register" className="flex items-center justify-center gap-2 px-8 py-4 bg-brand-navy text-brand-surface rounded-sm font-bold text-lg hover:bg-brand-navy/90 transition-all active:scale-[0.98] shadow-premium-lg">
+                Implementar no meu negócio <ArrowRight size={20} />
+              </Link>
+              <a href="#modulos" className="flex items-center justify-center gap-2 px-8 py-4 border border-input rounded-sm font-semibold text-lg hover:bg-muted transition-all active:scale-[0.98]">
+                Explorar Módulos
+              </a>
+            </div>
+            
+            <div className="pt-4 flex items-center gap-6 text-sm text-muted-foreground font-medium">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={16} className="text-primary" /> 
+                Sem setup complexo
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={16} className="text-primary" /> 
+                Conciliação Asaas
+              </div>
+            </div>
+          </div>
+
+          <div className="relative lg:block">
+            {/* Premium Mockup Representation */}
+            <div className="relative z-10 rounded-sm border border-input bg-brand-surface shadow-2xl overflow-hidden aspect-[4/3] flex flex-col">
+              <div className="h-12 bg-brand-navy border-b border-input flex items-center px-4 gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/40"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/40"></div>
+                </div>
+                <div className="mx-auto bg-brand-background/50 px-4 py-1 rounded-sm text-[10px] text-muted-foreground font-mono">
+                  app.locamed.com/dashboard
+                </div>
+              </div>
+              <div className="p-6 flex-1 space-y-6 bg-brand-background">
+                <div className="grid grid-cols-3 gap-4">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="h-24 rounded-sm border border-input bg-brand-surface p-4 space-y-2">
+                      <div className="h-2 w-1/2 bg-muted rounded-full"></div>
+                      <div className="h-4 w-3/4 bg-brand-navy/20 rounded-full"></div>
+                    </div>
+                  ))}
+                </div>
+                <div className="h-48 rounded-sm border border-input bg-brand-surface p-4 space-y-3">
+                  <div className="h-4 w-1/3 bg-muted rounded-full"></div>
+                  <div className="space-y-2">
+                    {[1,2,3,4].map(i => (
+                      <div key={i} className="h-8 w-full border-b border-input/50 flex items-center px-2 gap-3">
+                        <div className="w-4 h-4 rounded-sm bg-primary/20"></div>
+                        <div className="h-2 w-1/2 bg-muted rounded-full"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Decorative accent - strictly geometric, no blobs */}
+            <div className="absolute -top-6 -right-6 w-64 h-64 bg-primary/10 blur-3xl rounded-full -z-10"></div>
+            <div className="absolute -bottom-12 -left-12 w-96 h-96 bg-brand-navy/5 blur-3xl rounded-full -z-10"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. PROBLEMA / CONTEXTO */}
+      <section id="solucao" className="py-32 px-6 bg-brand-surface border-y border-input">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-navy tracking-tight leading-tight">
+              A gestão manual é o maior gargalo do seu crescimento.
+            </h2>
+            <div className="space-y-6">
+              {[
+                { title: "Caos Logístico", desc: "Planilhas desalinhadas e falta de visibilidade sobre onde cada poltrona está realmente." },
+                { title: "Furos Financeiros", desc: "Cobranças esquecidas ou não conciliadas, resultando em perda de receita líquida." },
+                { title: "Fricção com Parceiros", desc: "Dificuldade em calcular e pagar comissões de indicação de forma transparente." }
+              ].map((item, idx) => (
+                <div key={idx} className="flex gap-4">
+                  <div className="mt-1 h-5 w-5 rounded-sm border border-destructive/40 bg-destructive/10 flex items-center justify-center shrink-0">
+                    <span className="text-destructive text-[10px] font-bold">✕</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-foreground">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-brand-background border border-input p-12 rounded-sm relative">
+             <div className="absolute -top-4 -left-4 h-8 w-8 bg-primary rounded-sm"></div>
+             <h3 className="text-2xl font-bold text-brand-navy mb-6">A Solução LocaMed</h3>
+             <p className="text-muted-foreground leading-relaxed mb-8">
+               Transformamos a operação de locação em um fluxo linear e auditável. 
+               Cada reserva dispara automaticamente a cobrança, a logística e a futura comissão, 
+               liberando você para focar na expansão do negócio, não no preenchimento de planilhas.
+             </p>
+             <div className="space-y-4">
+               <div className="flex items-center gap-3 text-sm font-medium">
+                 <CheckCircle2 size={18} className="text-primary" />
+                 Visibilidade de Inventário em Tempo Real
+               </div>
+               <div className="flex items-center gap-3 text-sm font-medium">
+                 <CheckCircle2 size={18} className="text-primary" />
+                 Automação Financeira via Asaas
+               </div>
+               <div className="flex items-center gap-3 text-sm font-medium">
+                 <CheckCircle2 size={18} className="text-primary" />
+                 Gestão de Parceiros e Comissões
+               </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. FUNCIONALIDADES (Módulos) */}
+      <section id="modulos" className="py-32 px-6 max-w-7xl mx-auto">
+        <SectionHeading 
+          title="Arquitetura de Operação" 
+          subtitle="Módulos integrados que cobrem todo o ciclo de vida da locação, desde a prospecção até o recebimento." 
+        />
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <FeatureCard 
+            icon={Users} 
+            title="Gestão de Clientes" 
+            description="CRM especializado para pacientes pós-cirúrgicos, com histórico de locações e contratos vinculados." 
+          />
+          <FeatureCard 
+            icon={Bed} 
+            title="Controle de Poltronas" 
+            description="Gestão de inventário rigorosa. Controle de status, manutenção e alocação por categoria." 
+          />
+          <FeatureCard 
+            icon={Calendar} 
+            title="Reservas Inteligentes" 
+            description="Calendário operacional com visão de disponibilidade e agendamento rápido de entregas." 
+          />
+          <FeatureCard 
+            icon={Truck} 
+            title="Logística de Entregas" 
+            description="Fluxo de entrega e coleta organizado, garantindo que o equipamento chegue no tempo certo." 
+          />
+          <FeatureCard 
+            icon={FileText} 
+            title="Contratos Digitais" 
+            description="Vínculo jurídico transparente para cada locação, com controle de termos e prazos." 
+          />
+          <FeatureCard 
+            icon={CreditCard} 
+            title="Financeiro Precision" 
+            description="Fluxo de caixa, conciliação automática e gestão de cobranças integrada ao Asaas." 
+          />
+          <FeatureCard 
+            icon={Handshake} 
+            title="Rede de Parceiros" 
+            description="Gestão de médicos e clínicas parceiras que indicam seus serviços." 
+          />
+          <FeatureCard 
+            icon={Percent} 
+            title="Cálculo de Comissões" 
+            description="Transparência total no pagamento de comissões por indicação, calculado automaticamente." 
+          />
+          <FeatureCard 
+            icon={ShieldCheck} 
+            title="Disponibilidade" 
+            description="Visão macro de frota disponível vs. alocada para tomada de decisão rápida." 
+          />
+        </div>
+      </section>
+
+      {/* 5. OPERAÇÃO / WORKFLOW */}
+      <section className="py-32 px-6 bg-brand-navy text-brand-surface">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20 space-y-4">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Fluxo Operacional Linear</h2>
+            <p className="text-brand-surface/60 max-w-2xl mx-auto">
+              Do primeiro contato à liquidação financeira. Um processo sem fricção.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-8 relative">
+            {/* Connector Line (Desktop) */}
+            <div className="hidden md:block absolute top-12 left-0 w-full h-px bg-brand-surface/20 -z-10"></div>
+            
+            {[
+              { step: "01", label: "Reserva", desc: "Alocação da poltrona e cadastro do cliente." },
+              { step: "02", label: "Pagamento", desc: "Emissão automática de cobrança via API." },
+              { step: "03", label: "Logística", desc: "Agendamento de entrega e coleta." },
+              { step: "04", label: "Comissão", desc: "Liquidação do parceiro indicador." },
+            ].map((item, i) => (
+              <div key={i} className="text-center space-y-4 group">
+                <div className="mx-auto h-24 w-24 rounded-full border-2 border-brand-surface/30 flex items-center justify-center text-2xl font-bold bg-brand-navy group-hover:border-primary transition-colors">
+                  {item.step}
+                </div>
+                <h4 className="text-lg font-bold">{item.label}</h4>
+                <p className="text-sm text-brand-surface/60 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. BENEFÍCIOS */}
+      <section id="beneficios" className="py-32 px-6 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-8">
+            <SectionHeading 
+              title="Ganhe escala com controle absoluto." 
+              subtitle="LocaMed não é apenas um software de registro, é a espinha dorsal da sua operação." 
+              alignment="left"
+            />
+            <div className="grid gap-6">
+              {[
+                { t: "Redução de Glosas", d: "Toda locação é documentada e cobrada automaticamente." },
+                { t: "Otimização de Frota", d: "Saiba exatamente onde estão seus ativos e evite ociosidade." },
+                { t: "Fidelização de Parceiros", d: "Pagamentos de comissões pontuais e transparentes." },
+                { t: "Escalabilidade Operacional", d: "Gerencie 10 ou 1000 poltronas com o mesmo esforço." },
+              ].map((b, i) => (
+                <div key={i} className="flex gap-4 p-4 rounded-sm border border-transparent hover:border-input transition-colors">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <ChevronRight size={14} />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-foreground">{b.t}</h5>
+                    <p className="text-sm text-muted-foreground">{b.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative">
+            <div className="aspect-square bg-brand-surface rounded-sm border border-input shadow-premium-lg p-12 flex items-center justify-center">
+               <div className="text-center space-y-4">
+                  <div className="text-6xl font-bold text-brand-navy tracking-tighter">99.9%</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Precisão Operacional</div>
+               </div>
+            </div>
+            <div className="absolute -bottom-6 -right-6 h-32 w-32 bg-primary/20 blur-2xl rounded-full"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CTA FINAL */}
+      <section className="py-32 px-6 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-brand-navy/5 -z-10"></div>
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-brand-navy tracking-tight">
+            Pronto para elevar o padrão da sua operação?
+          </h2>
+          <p className="text-lg text-muted-foreground opacity-80">
+            Junte-se às clínicas e empresas de locação que priorizam a precisão técnica e a experiência do paciente.
+          </p>
+          <div className="flex justify-center gap-4 pt-4">
+            <Link to="/register" className="px-8 py-4 bg-brand-navy text-brand-surface rounded-sm font-bold text-lg hover:bg-brand-navy/90 transition-all active:scale-[0.98] shadow-premium-lg">
+              Começar Implementação
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FOOTER */}
+      <footer className="bg-brand-surface border-t border-input py-20 px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+          <div className="space-y-6 col-span-2 md:col-span-1">
+            <div className="flex items-center gap-2">
+              <div className="h-6 w-6 bg-brand-navy rounded-sm flex items-center justify-center">
+                <span className="text-brand-surface font-bold text-[10px]">LM</span>
+              </div>
+              <span className="text-lg font-bold tracking-tighter text-brand-navy">LOcAMed</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+              SaaS de alta precisão para gestão de locações de poltronas médicas e equipamentos pós-cirúrgicos.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-sm uppercase tracking-wider mb-6 text-foreground">Produto</h4>
+            <ul className="space-y-4 text-sm text-muted-foreground">
+              <li><a href="#modulos" className="hover:text-primary transition-colors">Módulos</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Preços</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Segurança</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-sm uppercase tracking-wider mb-6 text-foreground">Empresa</h4>
+            <ul className="space-y-4 text-sm text-muted-foreground">
+              <li><a href="#" className="hover:text-primary transition-colors">Sobre nós</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Contato</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Privacidade</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-sm uppercase tracking-wider mb-6 text-foreground">Suporte</h4>
+            <ul className="space-y-4 text-sm text-muted-foreground">
+              <li><a href="#" className="hover:text-primary transition-colors">Central de Ajuda</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Documentação API</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Status do Sistema</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-input flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+          <p>© {new Date().getFullYear()} LOcAMed. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-foreground transition-colors">Termos de Uso</a>
+            <a href="#" className="hover:text-foreground transition-colors">Política de Cookies</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

@@ -1,0 +1,208 @@
+import { LayoutDashboard, TrendingUp, Users, Bed, CalendarCheck, AlertCircle, ArrowRight } from 'lucide-react'
+import { useAuth } from '@/shared/hooks/useAuth'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
+import { Link } from 'react-router-dom'
+
+// =============================================================================
+// DashboardPage — Operational Command Center (Luxury Medical Edition)
+// =============================================================================
+// 
+// Design Strategy:
+// 1. Operational Flow: Shift from "KPIs" to "Active Workflow".
+// 2. Precision Layout: Use grid-based alignment, minimal shadows, and brand-navy accents.
+// 3. Zero-State Elegance: Treat empty data as an invitation to act, not a void.
+// =============================================================================
+
+export function DashboardPage() {
+  const { user } = useAuth()
+
+  return (
+    <div className="space-y-10 animate-in fade-in duration-500">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight text-brand-navy">
+            Painel de Controle
+          </h1>
+          <p className="text-sm text-muted-foreground font-medium">
+            Bem-vindo, {user?.name?.split(' ')[0] || 'Operador'}. Status da operação em tempo real.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Badge variant="neutral" className="px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-wider">
+            Sessão Ativa
+          </Badge>
+          <div className="h-4 w-px bg-input" />
+          <span className="text-xs text-muted-foreground font-medium">
+            {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </span>
+        </div>
+      </div>
+
+      {/* TOP ROW: Operational Pulse (High-level summary) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MetricCard 
+          title="Ocupação Atual" 
+          value="0" 
+          subtitle="Poltronas alocadas" 
+          icon={Bed} 
+          trend="stable"
+        />
+        <MetricCard 
+          title="Novas Reservas" 
+          value="0" 
+          subtitle="Últimos 7 dias" 
+          icon={CalendarCheck} 
+          trend="stable"
+        />
+        <MetricCard 
+          title="Base de Clientes" 
+          value="0" 
+          subtitle="Total de cadastros" 
+          icon={Users} 
+          trend="stable"
+        />
+        <MetricCard 
+          title="Eficiência de Frota" 
+          value="0%" 
+          subtitle="Taxa de utilização" 
+          icon={TrendingUp} 
+          trend="stable"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* MAIN COLUMN: Operational Flow */}
+        <div className="lg:col-span-2 space-y-8">
+          <Card className="border-input shadow-premium-sm overflow-hidden rounded-sm">
+            <CardHeader className="bg-brand-surface/50 border-b border-input px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <CardTitle className="text-base font-bold text-brand-navy tracking-tight">
+                    Fluxo de Trabalho Recente
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Movimentações críticas de reservas e logística.
+                  </CardDescription>
+                </div>
+                <Link to="/reservations" className="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                  Ver todas <ArrowRight size={12} />
+                </Link>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="flex flex-col items-center justify-center py-24 text-center space-y-6 bg-brand-background">
+                <div className="relative">
+                  <div className="absolute inset-0 blur-2xl bg-primary/10 rounded-full"></div>
+                  <div className="relative p-4 bg-brand-surface border border-input rounded-sm shadow-sm">
+                    <LayoutDashboard className="h-8 w-8 text-muted-foreground/50" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-bold text-brand-navy">Sem atividade no radar</p>
+                  <p className="text-xs text-muted-foreground max-w-xs mx-auto leading-relaxed">
+                    Não há reservas ativas ou movimentações logísticas pendentes no momento.
+                  </p>
+                </div>
+                <Link 
+                  to="/reservations" 
+                  className="px-4 py-2 bg-brand-navy text-brand-surface rounded-sm text-xs font-bold hover:bg-brand-navy/90 transition-all active:scale-[0.98]"
+                >
+                  Criar Primeira Reserva
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Operational Alerts / Critical Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             <AlertBox 
+               type="info" 
+               title="Atenção Logística" 
+               message="Não há entregas programadas para as próximas 24 horas." 
+             />
+             <AlertBox 
+               type="warning" 
+               title="Manutenção de Frota" 
+               message="Toda a frota de poltronas está atualmente disponível." 
+             />
+          </div>
+        </div>
+
+        {/* SIDE COLUMN: Command Center */}
+        <div className="space-y-8">
+          <Card className="border-input shadow-premium-sm rounded-sm overflow-hidden">
+            <CardHeader className="bg-brand-surface/50 border-b border-input px-6 py-4">
+              <CardTitle className="text-sm font-bold text-brand-navy tracking-tight">
+                Ações Rápidas
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 grid grid-cols-1 gap-3">
+              <QuickActionBtn label=\"Nova Reserva\" icon={CalendarCheck} href=\"/reservations\" />
+              <QuickActionBtn label=\"Novo Cliente\" icon={Users} href=\"/clients\" />
+              <QuickActionBtn label=\"Inventário\" icon={Bed} href=\"/chairs\" />
+              <QuickActionBtn label=\"Financeiro\" icon={TrendingUp} href=\"/financial\" />
+            </CardContent>
+          </Card>
+
+          <Card className="border-brand-navy/20 bg-brand-navy text-brand-surface rounded-sm shadow-premium-lg overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+               <ShieldCheck size={80} />
+            </div>
+            <CardHeader className="px-6 py-6 relative z-10">
+              <CardTitle className=\"text-sm font-bold text-brand-surface tracking-tight\">
+                Suporte Técnico
+              </CardTitle>
+              <CardDescription className=\"text-brand-surface/60 text-xs leading-relaxed\">
+                Dúvidas sobre integração Asaas ou gestão de comissões?
+              </CardDescription>
+            </CardHeader>
+            <CardContent className=\"px-6 pb-6 relative z-10\">
+              <button className=\"w-full py-3 px-4 rounded-sm bg-brand-surface text-brand-navy text-xs font-bold hover:bg-white transition-all active:scale-[0.98] shadow-sm\">
+                Solicitar Assistência
+              </button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Sub-components for Dashboard ──────────────────────────────────────────────────
+
+function MetricCard({ title, value, subtitle, icon: Icon, trend }: { 
+  title: string; value: string; subtitle: string; icon: any; trend: 'up' | 'down' | 'stable' 
+}) {
+  return (
+    <Card className=\"border-input shadow-premium-sm rounded-sm group hover:border-primary/50 transition-colors\">\n      <CardContent className=\"p-6\">\n        <div className=\"flex items-start justify-between mb-6\">\n          <div className=\"p-2 bg-brand-surface border border-input rounded-sm text-muted-foreground group-hover:text-primary transition-colors\">\n            <Icon size={20} strokeWidth={1.5} />\n          </div>\n          <Badge variant=\"neutral\" className=\"text-[9px] font-bold uppercase tracking-widest opacity-60\">Sincronizado</Badge>\n        </div>\n        <div className=\"space-y-1\">\n          <p className=\"text-xs font-bold text-muted-foreground uppercase tracking-wider\">{title}</p>\n          <div className=\"flex items-baseline gap-2\">\n            <span className=\"text-3xl font-bold text-brand-navy tracking-tighter\">{value}</span>\n          </div>\n          <p className=\"text-[11px] text-muted-foreground/70 font-medium\">{subtitle}</p>\n        </div>\n      </CardContent>\n    </Card>\n  )\n}
+
+function QuickActionBtn({ label, icon: Icon, href }: { label: string; icon: any; href: string }) {
+  return (
+    <Link to={href} className=\"flex items-center gap-3 w-full p-3 rounded-sm border border-input bg-brand-background text-sm font-medium text-muted-foreground hover:text-brand-navy hover:bg-brand-surface hover:border-primary/50 transition-all shadow-sm group\">\n      <div className=\"p-1.5 bg-brand-surface rounded-sm group-hover:bg-white transition-colors border border-input\">\n        <Icon className=\"h-4 w-4\" />\n      </div>\n      {label}\n    </Link>\n  )\n}
+
+function AlertBox({ type, title, message }: { type: 'info' | 'warning'; title: string; message: string }) {
+  const isWarning = type === 'warning';
+  return (
+    <div className={cn(
+      \"flex gap-4 p-5 rounded-sm border transition-all\",
+      isWarning ? \"bg-amber-50/50 border-amber-200\" : \"bg-blue-50/50 border-blue-200\"
+    )}>
+      <div className={cn(
+        \"h-8 w-8 rounded-sm flex items-center justify-center shrink-0\",
+        isWarning ? \"bg-amber-100 text-amber-600\" : \"bg-blue-100 text-blue-600\"
+      )}>
+        <AlertCircle size={16} />
+      </div>
+      <div className=\"space-y-1\">
+        <h4 className=\"text-sm font-bold text-brand-navy\">{title}</h4>
+        <p className=\"text-xs text-muted-foreground leading-relaxed\">{message}</p>
+      </div>
+    </div>
+  )
+}
+
+function cn(...classes: any[]) {
+  return classes.filter(Boolean).join(' ');
+}

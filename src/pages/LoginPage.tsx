@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { toast } from 'sonner';
+import { Heart } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card, CardContent } from '@/components/ui/Card';
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -19,8 +23,8 @@ export function LoginPage() {
 
   if (!auth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-6">
-        <div className="text-red-500">Erro: AuthContext não encontrado. Verifique o AuthProvider.</div>
+      <div className="min-h-screen flex items-center justify-center bg-brand-background p-6">
+        <div className="text-status-error">Erro: AuthContext não encontrado. Verifique o AuthProvider.</div>
       </div>
     );
   }
@@ -47,44 +51,70 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-6">
-      <div className="w-full max-w-md space-y-8 bg-card p-8 rounded-xl border shadow-sm">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Bem-vindo de volta</h1>
-          <p className="text-muted-foreground">Entre com suas credenciais para acessar o sistema.</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-brand-background p-6 font-sans">
+      {/* Brand Header */}
+      <div className="flex flex-col items-center mb-10 space-y-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-md bg-brand-navy shadow-premium mb-2">
+          <Heart className="h-6 w-6 text-white" />
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">E-mail</label>
-            <input 
-              {...register('email')}
-              className={`w-full rounded-md border px-3 py-2 ${errors.email ? 'border-red-500' : ''}`} 
-              type="email" 
-              placeholder="seu@email.com" 
-            />
-            {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Senha</label>
-            <input 
-              {...register('password')}
-              className={`w-full rounded-md border px-3 py-2 ${errors.password ? 'border-red-500' : ''}`} 
-              type="password" 
-              placeholder="******" 
-            />
-            {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
-          </div>
-          <button 
-            type="submit"
-            className="w-full bg-primary text-primary-foreground py-2 rounded-md font-medium hover:bg-primary/90 transition-colors"
-          >
-            Entrar
-          </button>
-        </form>
-        <p className="text-center text-sm text-muted-foreground">
-          Não tem uma conta? <Link to="/register" className="text-primary font-medium">Cadastre-se</Link>
-        </p>
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-brand-navy tracking-tight">Poltronas Med</h2>
+          <p className="text-[10px] text-brand-slate uppercase tracking-widest font-medium">Luxury Medical SaaS</p>
+        </div>
       </div>
+
+      <Card className="w-full max-w-md border-slate-200 shadow-premium-lg">
+        <CardContent className="p-8 pt-6">
+          <div className="text-center mb-8 space-y-2">
+            <h1 className="text-2xl font-semibold text-brand-navy tracking-tight">Bem-vindo de volta</h1>
+            <p className="text-sm text-brand-slate">Entre com suas credenciais para acessar o sistema.</p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-brand-slate uppercase tracking-wider">
+                E-mail
+              </label>
+              <Input 
+                {...register('email')}
+                type="email" 
+                placeholder="nome@empresa.com"
+                className={errors.email ? 'border-status-error focus-visible:ring-status-error/20' : ''}
+              />
+              {errors.email && <p className="text-[11px] text-status-error font-medium">{errors.email.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-medium text-brand-slate uppercase tracking-wider">
+                  Senha
+                </label>
+                <a href="#" className="text-[11px] text-brand-blue hover:underline font-medium">Esqueceu a senha?</a>
+              </div>
+              <Input 
+                {...register('password')}
+                type="password" 
+                placeholder="••••••••"
+                className={errors.password ? 'border-status-error focus-visible:ring-status-error/20' : ''}
+              />
+              {errors.password && <p className="text-[11px] text-status-error font-medium">{errors.password.message}</p>}
+            </div>
+
+            <Button type="submit" variant="primary" className="w-full py-6 text-sm">
+              Entrar no Sistema
+            </Button>
+          </form>
+
+          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+            <p className="text-sm text-brand-slate">
+              Não tem uma conta?{' '}
+              <Link to="/register" className="text-brand-blue font-semibold hover:text-brand-navy transition-colors">
+                Cadastre-se agora
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
