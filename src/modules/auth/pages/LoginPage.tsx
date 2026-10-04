@@ -10,23 +10,7 @@ import { cn } from '@/lib/utils'
 // =============================================================================
 // LoginPage — Autenticacao com Supabase Auth
 // =============================================================================
-//
-// Fluxo:
-//   1. Usuario preenche email e senha
-//   2. RHF valida com Zod antes de submeter
-//   3. signIn() chama supabase.auth.signInWithPassword()
-//   4. Supabase dispara onAuthStateChange → AuthProvider chama GET /me
-//   5. AuthProvider popula user + company no contexto
-//   6. navigate('/') leva ao dashboard (ProtectedRoute libera o acesso)
-//
-// Erros mapeados:
-//   "Invalid login credentials"  → "E-mail ou senha incorretos."
-//   "Email not confirmed"         → "Confirme seu e-mail antes de entrar."
-//   "Too many requests"           → "Muitas tentativas. Aguarde alguns minutos."
-//   outros                        → mensagem original do Supabase (fallback)
-// =============================================================================
 
-// ── Schema de validacao ───────────────────────────────────────────────────────
 const loginSchema = z.object({
   email: z
     .string()
@@ -40,7 +24,6 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
-// ── Mapeamento de erros do Supabase para PT-BR ────────────────────────────────
 function mapSupabaseError(message: string): string {
   const lower = message.toLowerCase()
   if (lower.includes('invalid login credentials')) {
@@ -55,12 +38,8 @@ function mapSupabaseError(message: string): string {
   if (lower.includes('network') || lower.includes('fetch')) {
     return 'Erro de conexao. Verifique sua internet e tente novamente.'
   }
-  // Fallback: exibir mensagem original se nao mapeada
   return message
 }
-
-// ── Componentes de UI inline ─────────────────────────────────────────────────
-// Nao dependem de shadcn instalado — built com Tailwind puro
 
 interface InputFieldProps {
   id:           string
@@ -71,7 +50,6 @@ interface InputFieldProps {
   error?:       string
   disabled?:    boolean
   rightSlot?:   React.ReactNode
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registration: any
 }
 
@@ -88,10 +66,7 @@ function InputField({
 }: InputFieldProps) {
   return (
     <div className="space-y-1.5">
-      <label
-        htmlFor={id}
-        className="block text-sm font-medium text-foreground"
-      >
+      <label htmlFor={id} className="block text-sm font-medium text-foreground">
         {label}
       </label>
       <div className="relative">
@@ -131,7 +106,6 @@ function InputField({
   )
 }
 
-// ── Pagina de Login ───────────────────────────────────────────────────────────
 export function LoginPage() {
   const { signIn } = useAuth()
   const navigate   = useNavigate()
@@ -155,8 +129,7 @@ export function LoginPage() {
 
     try {
       await signIn(data.email, data.password)
-      // signIn dispara onAuthStateChange → AuthProvider busca /me automaticamente
-      navigate('/', { replace: true })
+      navigate('/dashboard', { replace: true })
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Erro desconhecido.'
@@ -169,8 +142,6 @@ export function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md">
-
-        {/* Cabecalho */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-primary mb-4">
             <svg
@@ -193,8 +164,6 @@ export function LoginPage() {
             Sistema de Locacao Pos-Cirurgica
           </p>
         </div>
-
-        {/* Card do formulario */}
         <div className="rounded-xl border bg-card shadow-sm p-8">
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-card-foreground">
@@ -204,8 +173,6 @@ export function LoginPage() {
               Use suas credenciais de acesso
             </p>
           </div>
-
-          {/* Erro de autenticacao */}
           {authError && (
             <div
               role="alert"
@@ -226,8 +193,6 @@ export function LoginPage() {
               <p className="text-sm text-destructive">{authError}</p>
             </div>
           )}
-
-          {/* Formulario */}
           <form
             onSubmit={(e) => { void handleSubmit(onSubmit)(e) }}
             noValidate
@@ -243,7 +208,6 @@ export function LoginPage() {
               disabled={isSubmitting}
               registration={register('email')}
             />
-
             <InputField
               id="password"
               label="Senha"
@@ -269,7 +233,6 @@ export function LoginPage() {
                 </button>
               }
             />
-
             <button
               type="submit"
               disabled={isSubmitting}
@@ -296,12 +259,9 @@ export function LoginPage() {
             </button>
           </form>
         </div>
-
-        {/* Rodape */}
         <p className="text-center text-xs text-muted-foreground mt-6">
           Em caso de problemas de acesso, contate o administrador do sistema.
         </p>
-
       </div>
     </div>
   )

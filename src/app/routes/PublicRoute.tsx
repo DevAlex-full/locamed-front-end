@@ -2,15 +2,15 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '@/shared/hooks/useAuth'
 
 // =============================================================================
-// PublicRoute — Guard para rotas publicas (ex: /login)
+// PublicRoute — Guard para rotas publicas (ex: /login, /register)
 // =============================================================================
 //
 // Comportamento:
 //   loading    → exibe spinner enquanto verifica sessao inicial
-//   com sessao → redireciona para / (usuario ja esta logado)
+//   com sessao → redireciona para /dashboard (usuario ja esta logado)
 //   sem sessao → renderiza <Outlet /> (exibe a rota publica normalmente)
 //
-// Garante que usuario autenticado nao consiga acessar /login.
+// Garante que usuario autenticado nao consiga acessar /login ou /register.
 // =============================================================================
 
 export function PublicRoute() {
@@ -25,7 +25,7 @@ export function PublicRoute() {
   }
 
   if (session) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/dashboard" replace />
   }
 
   return <Outlet />
